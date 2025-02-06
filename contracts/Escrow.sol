@@ -75,7 +75,7 @@ contract Escrow is AccessControl {
         string challengeId;
         address serverOwner;
         uint256 serverAmount;
-        uint256 feeForSidequest;
+        uint256 feeForSidekick;
     }
 
     constructor(
@@ -133,7 +133,7 @@ contract Escrow is AccessControl {
         _countTransactions.increment();
         uint256 _count = _countTransactions.current();
 
-        uint calculatedFeeForSidequest = (_amount * feePercent) / 100;
+        uint calculatedFeeForSidekick = (_amount * feePercent) / 100;
 
         transactions[_count] = Transaction({
             id: _count,
@@ -145,7 +145,7 @@ contract Escrow is AccessControl {
             challengeId: _challengeId,
             serverOwner: _serverOwner,
             serverAmount: _serverAmount,
-            feeForSidequest: calculatedFeeForSidequest
+            feeForSidekick: calculatedFeeForSidekick
         });
 
         challenge_id[_challengeId] = _count;
@@ -202,7 +202,7 @@ contract Escrow is AccessControl {
         }
 
         address recipient = isRefund ? transaction.sender : transaction.receiver;
-        uint256 fee = isRefund ? 0 : feeForGasUsdt + transaction.feeForSidequest;
+        uint256 fee = isRefund ? 0 : feeForGasUsdt + transaction.feeForSidekick;
         uint256 serverAmount = isRefund ? 0 : transaction.serverAmount;
         uint256 transferAmount = transaction.amount - fee - serverAmount;
 
